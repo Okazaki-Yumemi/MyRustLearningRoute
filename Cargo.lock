@@ -130,3 +130,7 @@ version = "0.1.0"
 [[package]]
 name = "world_hello"
 version = "0.1.0"
+
+[[package]]
+name = "yuju_biaoda"
+version = "0.1.0"
