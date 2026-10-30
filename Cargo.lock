@@ -21,6 +21,10 @@ name = "caculation"
 version = "0.1.0"
 
 [[package]]
+name = "chars"
+version = "0.1.0"
+
+[[package]]
 name = "complex_num"
 version = "0.1.0"
 dependencies = [

@@ -431,3 +431,61 @@ Rust的标准库和其他语言的标准库相比，准入门槛比较高，因�
 - 类型转换必须是显示的
 - Rust的数值可以在上面使用方法， `13.14_f32.round()`
 
+
+
+
+# 字符，布尔，单元类型
+
+## 字符类型 char
+
+```rust
+fn main(){
+  let c = 'z';
+  let z = 'ℤ';
+  let g = '国';
+  let heart_eyed_cat = '😻';
+}
+```
+
+Rust的字符不仅仅是ASC II ， 所有的Unicode值都可以作为Rust字符，包含单个的中文、日文、韩文、emoji符号等等。
+
+`char` 类型表示一个Unicode 标量值，它占用固定的四字节内存与 UTF-32编码单元一致
+
+```rust
+fn main(){
+  let x = '中';
+  println!("字符 '中' 占用了 {} 字节的内存大小",size_of_val(&x));
+}
+```
+
+
+## 布尔 bool
+
+Rust中的布尔类型有两个可能的值
+```rust
+fn main(){
+  let t = true;
+  let f :bool = false;
+
+  if f{
+    println!("这段代码没有被执行");
+  }
+}
+```
+
+## 单元类型Unit
+
+
+单元类型就是 `()`
+
+唯一的值也是 `()`
+
+
+main函数就返回这个类型。
+
+没有返回值的函数在rust中是有单独的定义的 
+`发散函数(diverging functions)` 顾名思义，无法收敛的函数。
+
+例如常见的println!()的返回值也是单元类型()
+
+
