@@ -1,0 +1,14 @@
+[workspace]
+resolver = "3"
+members = [
+    "basic_concept",
+    "caculation",
+    "caculation/bitwise", "complex_num",
+    "floatingpoint",
+    "hw/10_28/prob4",
+    "loop_test",
+    "penguin",
+    "variables",
+    "world_hello",
+    "complex_num", "hw/10_30/p6",
+]
