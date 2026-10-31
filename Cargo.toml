@@ -10,5 +10,5 @@ members = [
     "penguin",
     "variables",
     "world_hello",
-    "complex_num", "hw/10_30/p6", "hw/10_30/chars", "hw/10_30/yuju_biaoda",
+    "complex_num", "hw/10_30/p6", "hw/10_30/chars", "hw/10_30/yuju_biaoda", "hw/10_30/function", "hw/10_31/ownership",
 ]
