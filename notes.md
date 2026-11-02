@@ -1512,3 +1512,69 @@ rust的话，就是通过变量在离开作用域时自动调用 drop 方法来�
 
 与其它系统编程语言的 free 函数相同，Rust 也提供了一个释放内存的函数： drop，但是不同的是，其它语言要手动调用 free 来释放每一个变量占用的内存，而 Rust 则在变量离开作用域时，自动调用 drop 函数
 
+# 元组
+
+元组是多种类型组合到一起形成的，因此它是复合类型，元组的长度是固定的，元组的顺序也是固定的。
+
+```rs
+fn main() {
+  let tup: (i32, f64, u8) = (500, 6.4, 1);
+}
+```
+
+变量`tpu`被绑定了一个元组值 `(500,6.4,1)`, 该元组的类型是`(i32, f64, u8)` 
+
+元组使用括号将多个类型组合到一起。
+
+## 用模型匹配解构元组
+
+```rs
+fn main() {
+  let tup = (500, 6.4, 1);
+
+  let (x,y,z) = tup;
+
+  println!("The value of y is: {}", y);
+}
+```
+
+上述代码首先创建一个元组，然后帮他绑定到tup上面，然后用 `let( x,y,z) = tup`来完成模式匹配。。
+
+## 用 `.` 来访问元组
+
+模式匹配可以让我们一次性的把元组中的值取出来，但是如果只是想要访问特定的元素，那么模式匹配就略显繁琐，对此，Rust提供了`.`的访问方式:
+
+```rs
+
+fn main(){
+  let x: (i32, f64, u8) = (500, 6.4, 1);
+
+  let five_hundred = x.0;
+
+  let six_point_four = x.1;
+
+  let one = x.2;
+}
+```
+
+## 元组的使用示例
+
+元组在函数返回值非常有用，例如和下面的代码，可以使用元组返回多个值
+```rs
+fn main() {
+  let s1 = String::from("hello");
+
+  let (s2, len) = calculate_length(s1);
+
+  println!("The length of '{}' is {}.", s2, len);
+}
+
+fn calculate_length(s: String) -> (String, usize) {
+  let length = s.len(); // len() 返回字符串的长度
+
+  (s, length)
+}
+```
+
+`calculate_length` 函数接收 `s1` 字符串的所有权，然后计算的字符串的长度，接着把字符串所有穿和字符串长度再返回给`s2` 和 `len` 变量
+
