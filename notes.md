@@ -1954,3 +1954,353 @@ $ cargo run
 }
 ```
 
+# 枚举
+
+枚举 enum通过列举可能的成员来定义一个枚举类型，例如扑克牌花色
+
+```rs
+enum PokerSuit {
+  Clubs,
+  Spades,
+  Diamonds,
+  Hearts,
+}
+```
+
+**枚举值**只可能是其中的某一个成员，抽象来看四种花色尽管是不同的花色，但是他们都是扑克花色。
+
+**枚举类型是一个类型，包含所有可能的枚举成员，而枚举值是该类型中的具体某个成员的实例**
+
+## 枚举值
+
+现在来创建两个实例
+
+```rs
+let heart =  PokerSuit::Hearts;
+let diamond = PokerSuit::Diamonds;
+```
+
+我们通过:: 操作符来访问Pokersuit下的具体成员，从代码可以清晰看出heart和 diamond都是Pokersuit枚举类型的，接着可以定义一个函数来使用
+```rs
+
+fn main() {
+  let heart = PokerSuit::Hearts;
+  let diamond = PokerSuit::Diamonds;
+
+  print_suit(heart);
+  print_suit(diamond);
+}
+
+fn print_suit(suit: PokerSuit) {
+  match suit {
+    PokerSuit::Clubs => println!("Clubs"),
+    PokerSuit::Spades => println!("Spades"),
+    PokerSuit::Diamonds => println!("Diamonds"),
+    PokerSuit::Hearts => println!("Hearts"),
+  }
+}
+```
+
+目前来说，枚举值还不能带有值，因此先用就结构体来实现
+
+```rs
+
+enum PokerSuit {
+  Clubs,
+  Spades,
+  Diamonds,
+  Hearts,
+}
+
+struct PokerCard {
+  suit: PokerSuit,
+  value: u8,
+}
+
+fn main() {
+  let c1 = PokerCard {
+    suit: PokerSuit::Hearts,
+    value: 1,
+  };
+
+  let c2 = PokerCard {
+    suit: PokerSuit::Diamonds,
+    value: 13,
+  };
+}
+
+```
+
+
+不过还可以这样
+```rs
+enum PokerCard {
+  Clubs(u8),
+  Spades(u8),
+  Diamonds(u8),
+  Hearts(u8),
+}
+
+fn main() {
+  let c1 = PokerCard::Hearts(1);
+  let c2 = PokerCard::Diamonds(13);
+}
+
+```
+
+直接将数据信息关联到枚举成员上，省去将近一半的代码。
+
+不仅如此，同一个枚举类型下的不同成员还能持有不同的数据类型。
+
+```rs
+
+enum PokerCard{
+  Clubs(u8),
+  Spades(u8),
+  Diamonds(char),
+  Hearts(char),
+}
+
+fn main(){
+  let c1 = PokerCard::Spades(5);
+  let c2 = PokerCard::Diamonds('A');
+}
+```
+
+
+## 同一化类型
+
+例如我们有一个WEB服务，需要接受用户的长连接，假设连接有两种，TcpStream和TlsStream，但是我们希望对这两个链接的处理流程相同，也就是用同一个函数来处理这两个链接
+
+```rs
+
+fn new (stream: TcpStream)  {
+  let mut s = stream;
+  if tls {
+    s = negotiate_tls(stream);
+  }
+}
+
+  websocket = WebSocket::from_raw_socket(
+    s, ......)
+```
+
+## Option 枚举用于处理空值
+在其他的编程语言当中，往往都有一个null关键字，用于表面一个变量当前的值为空。
+
+当你对这些null进行操作的时候，例如调用一个方法，就会直接抛出null异常，导致程序的崩溃。
+
+尽管如此，空值的表达依然非常有意义，因为空值表示当前时刻的变量的值是缺失的，有鉴于此，Rust吸取了很多教训，改为使用Option枚举来处理空值。
+
+```rs
+
+enum Option<T> {
+  Some(T),
+  None,
+}
+```
+
+其中T是泛型参数，Some(T)表示该枚举成员的数据类型是T
+
+```rs
+let some_number = Some(5);
+let some_string = Some("a string");
+
+let absent_number: Option<i32> = None;
+```
+
+使用None的时候需要告诉rust OptionT的类型，应为编译器只通过None值无法推断出some成员保存的值的类型。
+
+当有一个Some值的时候，我们就知道存在一个值，而这个值保存在Some中。而使用None的时候，其实和空值的意义是相同的。
+
+换句话说，其实就是因为 Option< T> 和 T的类型实际上是不一样的，在进行T的运算的时候必须把它转换为T类型。
+
+这样就避免了我们错误的使用一个空值。
+
+match语法就是用来进行匹配的。
+
+```rs
+
+fn plus_one(x: Option<i32>) -> Option<i32> {
+  match x {
+    None => None,
+    Some(i) => Some(i + 1),
+  }
+}
+
+let five = Some(5);
+let six = plus_one(five);
+let none = plus_one(None);
+```
+
+
+# 数组
+
+在日常开发中最常使用的数据结构之一就是数组。
+
+在Rust中，常用的数组有两种，第一种是速度很快但是长度固定的array, 第二种是动态可增长但是有性能损耗的vector。
+
+在这里，我们先重点看 Array , 将多个类型的相同的元素依次组合在一起
+- 长度固定
+- 元素必须有相同的类型
+- 依次线性排列
+
+数组是Rust的基本类型，是固定长度的，和其他的语言不同，其他编程语言的数组一般是可变长度的。
+
+## 创建数组
+
+rust中，数组是这样定义的
+
+```rs
+
+fn main() {
+  let a = [1, 2, 3, 4, 5];
+}
+
+```
+
+array存储在栈上面，性能很优秀
+
+例如要写一年中各个月份的数组
+```rs
+
+let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+```
+
+有些时候，还需要声明类型
+```rs
+let a: [i32; 5] = [1, 2, 3, 4, 5];
+```
+
+还可以用下面的语法初始化一个值重复出现n次的数组
+```rs
+let a = [3; 5]; // 等价于 let a = [3, 3, 3, 3, 3];
+```
+
+
+## 访问数组元素
+
+因为数组是连续存放元素的，所以可以通过索引来访问
+
+```rs
+fn main() {
+  let a = [9,8,7,6,5];
+
+  let first = a[0];
+  let second = a[1];
+}
+```
+
+**越界访问**
+
+```rs
+
+use std::io;
+
+fn main() {
+  let a = [ 1, 2, 3, 4, 5];
+  println!("Please enter an array index.");
+
+  let mut index = String::new();
+
+  io::stdin()
+    .read_line(&mut index)
+    .expect("Failed to read line");
+  
+  let index: usize = index
+    .trim()
+    .parse()
+    .expect("Index entered was not a number");
+  
+  let element = a[index];
+
+  println!("The value of the element at index {} is: {}", index, element);
+}
+
+```
+
+
+当你尝试使用索引访问元素时，Rust 将检查你指定的索引是否小于数组长度。如果索引大于或等于数组长度，Rust 会出现 panic。这种检查只能在运行时进行，比如在上面这种情况下，编译器无法在编译期知道用户运行代码时将输入什么值。
+
+
+
+### 数组元素为非基础类型
+
+```rs
+let array = [String::from("Hello"),8];
+```
+
+会直接爆炸
+
+因为let array [ 3;5] 底层是一个个copy出来的，而复杂类型的类型是没有实现Copy特征的，因此无法直接复制。
+
+
+而如果要手搓，太难看
+```rs
+let array = [String::from("rust is good!"),String::from("rust is good!"),String::from("rust is good!")];
+
+println!("{:#?}", array);
+```
+
+正确的写法应该用
+```rs
+let array: [String; 8] = std::array::from_fn(|_i| String::from("rust is good!"));
+
+println!("{:#?}", array);
+```
+
+## 数组切片
+
+在之前的章节有讲到过切片
+
+
+```rs
+let a : [i32; 5] = [1, 2, 3, 4, 5];
+
+let slice: &[i32] = &a[1..3];
+
+assert_eq!(slice, &[2, 3]);
+```
+
+slice的类型是`&[T]`，其中T是数组的元素类型。
+
+- 切片的长度可以不同
+- 创建切片的代价很小
+- 切片类型拥有不固定的大小，而切片引用类型则具有固定的大小
+
+
+```rs
+fn main() {
+  // 编译器自动推导出one的类型
+  let one             = [1, 2, 3];
+  // 显式类型标注
+  let two: [u8; 3]    = [1, 2, 3];
+  let blank1          = [0; 3];
+  let blank2: [u8; 3] = [0; 3];
+
+  // arrays是一个二维数组，其中每一个元素都是一个数组，元素类型是[u8; 3]
+  let arrays: [[u8; 3]; 4]  = [one, two, blank1, blank2];
+
+  // 借用arrays的元素用作循环中
+  for a in &arrays {
+    print!("{:?}: ", a);
+    // 将a变成一个迭代器，用于循环
+    // 你也可以直接用for n in a {}来进行循环
+    for n in a.iter() {
+      print!("\t{} + 10 = {}", n, n+10);
+    }
+
+    let mut sum = 0;
+    // 0..a.len,是一个 Rust 的语法糖，其实就等于一个数组，元素是从0,1,2一直增加到到a.len-1
+    for i in 0..a.len() {
+      sum += a[i];
+    }
+    println!("\t({:?} = {})", a, sum);
+  }
+}
+```
+
+- 数组类型容易跟数组切片混淆，[ T;n] 描述了一个数组的类型，而 [ T] 描述了切片的类型， 因为切片是运行期的数据结构，它的长度无法在编译期得知，因此不能用 [ T;n] 的形式去描述
+- [u8; 3]和[u8; 4]是不同的类型，数组的长度也是类型的一部分
+- 在实际开发中，使用最多的是数组切片[ T]，我们往往通过引用的方式去使用&[ T]，因为后者有固定的类型大小
+

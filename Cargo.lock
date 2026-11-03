@@ -32,6 +32,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "enumerate"
+version = "0.1.0"
+
+[[package]]
 name = "floatingpoint"
 version = "0.1.0"
 
@@ -129,6 +133,10 @@ version = "0.1.0"
 
 [[package]]
 name = "prob4"
+version = "0.1.0"
+
+[[package]]
+name = "shuzu"
 version = "0.1.0"
 
 [[package]]
