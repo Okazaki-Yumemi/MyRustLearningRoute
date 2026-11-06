@@ -10,5 +10,5 @@ members = [
     "penguin",
     "variables",
     "world_hello",
-    "complex_num", "hw/10_30/p6", "hw/10_30/chars", "hw/10_30/yuju_biaoda", "hw/10_30/function", "hw/10_31/ownership", "hw/11_1/string_s", "hw/11_2/tupleee", "hw/11_2/struct_object", "hw/11_3/enumerate", "hw/11_3/shuzu",
+    "complex_num", "hw/10_30/p6", "hw/10_30/chars", "hw/10_30/yuju_biaoda", "hw/10_30/function", "hw/10_31/ownership", "hw/11_1/string_s", "hw/11_2/tupleee", "hw/11_2/struct_object", "hw/11_3/enumerate", "hw/11_3/shuzu", "hw/11_6/flow_control",
 ]
