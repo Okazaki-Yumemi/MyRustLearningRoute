@@ -167,6 +167,10 @@ name = "struct_object"
 version = "0.1.0"
 
 [[package]]
+name = "trait_"
+version = "0.1.0"
+
+[[package]]
 name = "tupleee"
 version = "0.1.0"
 
