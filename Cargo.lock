@@ -36,6 +36,10 @@ name = "enumerate"
 version = "0.1.0"
 
 [[package]]
+name = "fanxing"
+version = "0.1.0"
+
+[[package]]
 name = "floatingpoint"
 version = "0.1.0"
 
